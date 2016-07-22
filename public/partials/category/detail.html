@@ -1,0 +1,16 @@
+<div class="container" ng-controller="CategoryDetailCtrl as cd">
+    <!-- recents replies in this category -->
+    <div class="col s3">
+    </div>
+
+    <!-- topics section -->
+    <div class="col s9">
+        <ul class="collection with-header">
+            <li class="collection-header"><h4>All topics</h4></li>
+            <li class="collection-item" ng-repeat="topic in cd.topics">
+                <p><a href="">{{ topic.title }}</a></p>
+            </li>
+        </ul>
+        <!-- if have sub-categories we list them -->
+    </div>
+</div>

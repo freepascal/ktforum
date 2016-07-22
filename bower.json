@@ -1,0 +1,23 @@
+{
+  "name": "ktforum",
+  "description": "",
+  "main": "",
+  "authors": [
+    "freepascal <magicalmoon17@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Materialize": "materialize#^0.97.6",
+    "angular": "^1.5.7",
+    "angular-ui-router": "^0.3.1"
+  }
+}

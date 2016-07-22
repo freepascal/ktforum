@@ -1,0 +1,17 @@
+<div class="container" ng-controller="AppCtrl as app">
+    <!-- recent replies in all categories -->
+    <div class="col s3">
+    </div>
+
+    <!-- categories section -->
+    <div class="col s9">
+        <ul class="collection">
+            <li class="collection-item avatar" ng-repeat="category in app.categories">
+                <img src="images/email.png" class="circle" alt="">
+                <span class="title"><a ui-sref="category({slug:category.id})"><b>{{ category.title }}</b></a></span>
+                <p>{{ category.description }}</p>
+                 <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            </li>
+        </ul>
+    </div>
+</div>
