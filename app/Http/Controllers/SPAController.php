@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use View;
 
 class SPAController extends Controller
 {

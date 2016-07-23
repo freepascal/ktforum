@@ -1,0 +1,24 @@
+<div class="container" ng-controller="AuthLoginCtrl as login">
+    <div class="row">
+        <div class="col s12 m6 offset-m2 l4 offset-l4">
+            <div class="row">
+                <div class="input-field">
+                    <input type="text" class="validate" ng-model="login.email">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field">
+                    <input type="password" class="validate" ng-model="login.password">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <a class="waves-effect wave-light btn left" ng-click="login.login()">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    Materialize.updateTextFields();
+</script>

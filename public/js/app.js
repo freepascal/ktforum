@@ -1,5 +1,7 @@
 var app = angular.module("app", ['ui.router']);
 
+app.value('BACKEND_API', 'api/');
+
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
     $urlRouterProvider.otherwise('404');
@@ -7,6 +9,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         .state('404', {
             url: '/404',
             templateUrl: '/partials/404.html'
+        })
+        .state('login', {
+            url: '/login',
+            controller: 'AuthLoginCtrl',
+            templateUrl: '/partials/auth/login.html'
         })
         .state('app', {
             url: '/',
@@ -17,30 +24,28 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             url: '/c/:slug',
             controller: 'CategoryDetailCtrl',
             templateUrl: '/partials/category/detail.html'
+        })
+        .state('topic_create', {
+            url: '/create',
+            controller: 'TopicCreateCtrl',
+            templateUrl: '/partials/topic/create.html'
         });
 
     $locationProvider.html5Mode(true);
 }]);
 
-var AppCtrl = function() {
-    this.categories = [
-        {
-            id: 1,
-            title: 'Startup-Khởi Nghiệp!',
-            description: 'Khoi nghiep lam giau nhe anh chi em oi'
-        },
-        {
-            id: 2,
-            title: 'Desktop Development',
-            description: 'Trước đó, hình ảnh Hari Won xuất hiện tại sân bay với thân hình phát tướng đã gây xôn xao cộng đồng mạng. Tuy nhiên do diện đầm rộng nên phần bụng chưa được kiểm chứng rõ. Cô cũng né tránh các câu hỏi liên quan đến vấn đề mang thai với bạn trai.'
-        },
-        {
-            id: 3,
-            title: 'Math & Youth magazines',
-            description: 'I wanna love you so much!'
-        }
-    ];
-};
+var AppCtrl = ['$http', 'BACKEND_API', '$scope', function($http, BACKEND_API, $scope) {
+    // initialize
+    var self = this;
+    self.categories = [];
+    $http({
+        url: BACKEND_API + 'category',
+        method: 'GET'
+    }).then(function(response) {
+        self.categories = response.data.categories;
+        console.log("categories:" + JSON.stringify(response.data.categories));
+    });
+}];
 
 var CategoryDetailCtrl = ['$stateParams', function($stateParams) {
     this.topics = [
@@ -61,7 +66,31 @@ var CategoryDetailCtrl = ['$stateParams', function($stateParams) {
     ];
 }];
 
-var topicDetailCtrl = ['$stateParams', function($stateParams) {
+var TopicCreateCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
+    var self = this;
+    self.categories = [];
+    self.create = function() {
+        $http({
+            url: BACKEND_API + 'topic/store',
+            method: 'POST'
+        }).then(function successCallback(response) {
+            alert("success");
+            alert("res.data" + response.data);
+        }, function errorCallback(response) {
+
+        });
+    };
+    $http({
+        url: BACKEND_API + 'category',
+        method: 'GET'
+    }).then(function successCallback(response) {
+        self.categories = response.data.categories;
+    }, function errorCallback(response) {
+
+    });
+}];
+
+var TopicDetailCtrl = ['$stateParams', function($stateParams) {
     this.topic = {
         id: 1,
         title: 'Topic thu nhat',
@@ -71,6 +100,31 @@ var topicDetailCtrl = ['$stateParams', function($stateParams) {
     };
 }];
 
+// AUTHENTICATION
+var AuthLoginCtrl = ['$http', '$window', 'BACKEND_API', function($http, $window, BACKEND_API) {
+    this.login = function() {
+        console.log('email: ' + this.email);
+        console.log('passwd: ' + this.password);
+        $http({
+            url: BACKEND_API + 'auth/login',
+            method: 'POST',
+            data: {
+                email: this.email,
+                password: this.password
+            }
+        }).then(function(response) {
+            if (response.data.token) {
+                $window.localStorage.setItem('token', response.data.token);
+                alert("Save token successfully");
+            }
+        }, function errorCallback() {
+            alert("errorCallback");
+        });
+    };
+}];
+
 app.controller("AppCtrl", AppCtrl)
     .controller('CategoryDetailCtrl', CategoryDetailCtrl)
-    ;
+    .controller('AuthLoginCtrl', AuthLoginCtrl)
+    .controller('TopicCreateCtrl', TopicCreateCtrl)
+;
