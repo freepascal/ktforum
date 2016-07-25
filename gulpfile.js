@@ -17,7 +17,8 @@ elixir(function(mix) {
             'jquery/dist/jquery.min.js',
             'Materialize/dist/js/materialize.min.js',
             'angular/angular.min.js',
-            'angular-ui-router/release/angular-ui-router.min.js'
+            'angular-ui-router/release/angular-ui-router.min.js',
+            'jwt-decode/build/jwt-decode.min.js'
         ],
         'public/js/lib.js',
         bowerDir

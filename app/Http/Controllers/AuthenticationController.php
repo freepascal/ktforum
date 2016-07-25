@@ -26,4 +26,18 @@ class AuthenticationController extends Controller
         // all good so return the token
         return response()->json(compact('token'));
     }
+
+    public function validateToken(Request $request)
+    {
+        $user = null;
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch(Exception $e) {
+
+        }
+        if ($user) {
+            return response()->json(['token_status' => true]);
+        }
+        return response()->json(['token_status' => false]);
+    }
 }

@@ -17,6 +17,7 @@ class CreateTopicsTable extends Migration
             $table->integer('category_id')->references('id')->on('categories');
             $table->integer('user_id')->references('id')->on('users');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('body');
             $table->boolean('is_sticked');
             $table->boolean('is_locked');
