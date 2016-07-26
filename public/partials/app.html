@@ -10,10 +10,10 @@
         <!-- categories section -->
         <div class="col l9 m8 s12">
             <ul class="collection">
-                <li class="collection-item avatar" ng-repeat="category in app.categories">
+                <li class="collection-item avatar" ng-repeat="c in app.categories">
                     <img src="images/email.png" class="circle" alt="">
-                    <span class="title"><a ui-sref="category({slug:category.slug? category.slug: category.id})"><b ng-bind="category.title" class="flow-text"></b></a></span>
-                    <p ng-bind="category.description" class="flow-text"></p>
+                    <span class="title"><a ui-sref="category({slug:c.slug? c.slug: c.id})"><b ng-bind="c.title" class="flow-text"></b></a></span>
+                    <p ng-bind="c.description" class="flow-text"></p>
                     <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                 </li>
             </ul>
