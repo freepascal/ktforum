@@ -62,14 +62,14 @@ var AppCtrl = ['$http', 'BACKEND_API', '$scope', function($http, BACKEND_API, $s
     });
 }];
 
-var AppCategoryCtrl = ['$stateParams', '$http', function($stateParams, $http) {
+var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($stateParams, $http, BACKEND_API) {
     var self = this;
     self.subcategories = [];
     $http({
         url: BACKEND_API + 'category/subcategories/' + $stateParams.slug,
         method: 'GET'
-    }).then(function(data, status, headers, config) {
-        self.subcategories = data.subcategories;
+    }).then(function(res) {
+        self.subcategories = res.data.subcategories;
     });
 }];
 

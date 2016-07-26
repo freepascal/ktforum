@@ -1,4 +1,4 @@
-<div class="container" ng-controller="AppCtrl as app">
+<div class="container-fluid" ng-controller="AppCtrl as app">
     <div class="row">
         <div ng-include="'/partials/navbar.html'"></div>
 
@@ -12,7 +12,7 @@
             <ul class="collection">
                 <li class="collection-item avatar" ng-repeat="category in app.categories">
                     <img src="images/email.png" class="circle" alt="">
-                    <span class="title"><a ui-sref="category({slug:category.slug})"><b ng-bind="category.title" class="flow-text"></b></a></span>
+                    <span class="title"><a ui-sref="category({slug:category.slug? category.slug: category.id})"><b ng-bind="category.title" class="flow-text"></b></a></span>
                     <p ng-bind="category.description" class="flow-text"></p>
                     <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                 </li>

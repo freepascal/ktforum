@@ -1,16 +1,35 @@
-<div class="container" ng-controller="AppCategoryCtrl as cd">
-    <!-- recents replies in this category -->
-    <div class="col s3">
-    </div>
+<div class="container-fluid" ng-controller="AppCategoryCtrl as appcategory">
+    <div class="row">
+        <div ng-include="'partials/navbar.html'"></div>
 
-    <!-- topics section -->
-    <div class="col s9">
-        <ul class="collection with-header">
-            <li class="collection-header"><h4>All topics</h4></li>
-            <li class="collection-item" ng-repeat="topic in cd.topics">
-                <p><a href="">{{ topic.title }}</a></p>
-            </li>
-        </ul>
-        <!-- if have sub-categories we list them -->
+        <!-- recents replies in this category -->
+        <div class="col l3 m4 s12">
+            <p class="flow-text">You may constrain the format of your route parameters using the where method on a route instance. The where method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:</p>
+        </div>
+
+        <!-- topics section -->
+        <div class="col l9 m8 s12">
+            <!-- if have sub-categories we list them -->
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header active"><b class="flow-text">Subforums</b></div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <li class="collection-item avatar" ng-repeat="category in appcategory.subcategories">
+                                <img src="images/email.png" class="circle" alt="">
+                                <span class="title"><a ui-sref="category({slug: category.slug? category.slug: category.id})"><b ng-bind="category.title" class="flow-text"></b></a></span>
+                                <p ng-bind="category.description" class="flow-text"></p>
+                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
+<script>
+  $('.collapsible').collapsible({
+    accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+  });
+</script>
