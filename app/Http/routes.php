@@ -11,7 +11,7 @@ Route::group(array('prefix' => 'api/'), function() {
     Route::get('auth/validate_token', 'AuthenticationController@validateToken');
 
     Route::resource('category', 'CategoryController', ['only' => ['index', 'show']]);
-    Route::get('category/subcategories/{parent_id?}', array(
+    Route::get('category/subcategories/{slug_of_parent?}', array(
         'uses'  => 'CategoryController@subcategories'
     ));
 

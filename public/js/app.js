@@ -38,7 +38,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         })
         .state('category', {
             url: '/c/:slug',
-            controller: 'CategoryDetailCtrl',
+            controller: 'AppCategoryCtrl',
             templateUrl: '/partials/category/detail.html'
         })
         .state('topic_create', {
@@ -55,31 +55,22 @@ var AppCtrl = ['$http', 'BACKEND_API', '$scope', function($http, BACKEND_API, $s
     var self = this;
     self.categories = [];
     $http({
-        url: BACKEND_API + 'category/subcategories',
+        url: BACKEND_API + 'category',
         method: 'GET'
-    }).then(function(response) {
-        self.categories = response.data.categories;
-        console.log("categories:" + JSON.stringify(response.data.categories));
+    }).then(function(res) {
+        self.categories = res.data.categories;
     });
 }];
 
-var CategoryDetailCtrl = ['$stateParams', function($stateParams) {
-    this.topics = [
-        {
-            id: 1,
-            title: 'You Mercury in Leo',
-            body: 'Sao Thủy Sư Tử sinh ra để sáng tạo',
-            is_sticked: true,
-            is_locked: true
-        },
-        {
-            id: 2,
-            title: 'Tôi phải làm sao để quên đi người ta?',
-            body: 'Hỏi chúa để biết chi tiết',
-            is_sticked: false,
-            is_locked: false
-        }
-    ];
+var AppCategoryCtrl = ['$stateParams', '$http', function($stateParams, $http) {
+    var self = this;
+    self.subcategories = [];
+    $http({
+        url: BACKEND_API + 'category/subcategories/' + $stateParams.slug,
+        method: 'GET'
+    }).then(function(data, status, headers, config) {
+        self.subcategories = data.subcategories;
+    });
 }];
 
 var TopicCreateCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
@@ -165,28 +156,13 @@ var ValidateTokenCtrl = ['$http', '$window', 'BACKEND_API', function($http, $win
 }];
 
 // DEBUG
-var DebugInfoCtrl = ['$http', '$window', 'BACKEND_API', function($http, $window, BACKEND_API) {
-    var self = this;
-    self.debug_info = {
-        token_status: false
-    };
-    $http({
-        url: BACKEND_API + 'auth/validate_token',
-        method: 'GET'
-    }).then(function(response) {
-        self.debug_info.token_status = response.data.token_status;
-    });
-    var decoded = jwt_decode($window.localStorage.getItem('token'));
-    console.log('decoded:' + angular.toJson(decoded));
-}];
 
 app.controller("AppCtrl", AppCtrl)
-    .controller('CategoryDetailCtrl', CategoryDetailCtrl)
+    .controller('AppCategoryCtrl', AppCategoryCtrl)
 
     // AUTHENTICATION
     .controller('AuthLoginCtrl', AuthLoginCtrl)
     .controller('ValidateTokenCtrl', ValidateTokenCtrl)
 
     .controller('TopicCreateCtrl', TopicCreateCtrl)
-    .controller('DebugInfoCtrl', DebugInfoCtrl)
 ;
