@@ -62,14 +62,47 @@ var AppCtrl = ['$http', 'BACKEND_API', '$scope', function($http, BACKEND_API, $s
     });
 }];
 
+var AppAuthCtrl = ['$http', 'BACKEND_API', function($http, BACKEND_API) {
+
+}];
+
 var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($stateParams, $http, BACKEND_API) {
     var self = this;
-    self.subcategories = [];
+    self.breadcrumb = [];
+    self.category = {};
+    self.display_subcategories = function() {
+        return true;
+    }
+
+    // retrieve specified category and its topics
     $http({
-        url: BACKEND_API + 'category/subcategories/' + $stateParams.slug,
+        url: BACKEND_API + 'category/' + $stateParams.slug,
         method: 'GET'
     }).then(function(res) {
-        self.subcategories = res.data.subcategories;
+        self.category = res.data.category;
+    });
+
+    // retrieve forum location
+    $http({
+        url: BACKEND_API + 'category/' + $stateParams.slug + '/breadcrumb',
+        method: 'GET'
+    }).then(function(res) {
+        function standardize(breadcrumb) {
+            result = [], i = 0;
+            for(key in breadcrumb) {
+                if (i % 2 == 0) {
+                    result.unshift({
+                        title: breadcrumb[key]
+                    });
+                } else {
+                    result[0]['slug'] = breadcrumb[key]
+                }
+                ++i;
+            }
+            return result;
+        }
+        self.breadcrumb = standardize(res.data.breadcrumb[0]);
+        console.log("breadcrumb: " + JSON.stringify(self.breadcrumb));
     });
 }];
 
@@ -110,6 +143,17 @@ var TopicDetailCtrl = ['$stateParams', function($stateParams) {
         category_id: 1,
         user_id: 1
     };
+}];
+
+var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootScope', function($http, $window, BACKEND_API, UserService, $rootScope) {
+    var self = this;
+    self.user = null;
+    $http({
+        url: BACKEND_API + 'auth/me',
+        method: 'GET'
+    }).then(function(res) {
+        self.user = res.data.user;
+    });
 }];
 
 // AUTHENTICATION
@@ -158,6 +202,8 @@ var ValidateTokenCtrl = ['$http', '$window', 'BACKEND_API', function($http, $win
 // DEBUG
 
 app.controller("AppCtrl", AppCtrl)
+    .controller('AppAuthCtrl', AppAuthCtrl)
+    .controller('AppNavbarCtrl', AppNavbarCtrl)
     .controller('AppCategoryCtrl', AppCategoryCtrl)
 
     // AUTHENTICATION
@@ -166,3 +212,14 @@ app.controller("AppCtrl", AppCtrl)
 
     .controller('TopicCreateCtrl', TopicCreateCtrl)
 ;
+
+app.factory("UserService", ['$http', 'BACKEND_API', function($http, BACKEND_API) {
+    var factory = {};
+    factory.getUser = function() {
+        return $http({
+            url: BACKEND_API + 'auth/me',
+            method: 'GET'
+        });
+    };
+    return factory;
+}]);

@@ -15,6 +15,9 @@ class CategorySeeder extends Seeder
         define('description', 'description');
         define('slug', 'slug');
         define('parent_id', 'parent_id');
+        define('depth', 'depth');
+
+        // depth 0
         DB::table('categories')->insert(array(
             array(
                 title           => 'PHPBB3',
@@ -33,38 +36,46 @@ class CategorySeeder extends Seeder
             )
         ));
 
+        // depth 1
         DB::table('categories')->insert(array(
             array(
                 title           => 'Extensions in Development',
                 description     => 'A place for Extension Authors to post and receive feedback on Extensions still in development. <b>No Extensions within this forum should be used within a live environment!</b>',
                 slug            => 'extensions-in-development',
-                parent_id       => 1
+                parent_id       => 1,
+                depth           => 1
             ),
             array(
                 title           => '[3.x.y] Support Forum',
                 description     => 'Get help with installation and running phpBB 3.2.x here. Please do <b>not</b> post bug reports, feature requests, or extension related questions here.',
                 slug            => '3-x-y-support-forum',
-                parent_id       => 1
+                parent_id       => 1,
+                depth           => 1
             ),
             array(
                 title           => '[3.1.x] Styles in Development',
                 description     => 'For style authors to post and receive feedback on styles still in development. Any development styles you wish to use on your live board should be installed with caution!',
                 slug            => '3-1-x-styles-in-development',
-                parent_id       => 1
+                parent_id       => 1,
+                depth           => 1
             )
         ));
+
+        // depth 2
         DB::table('categories')->insert(array(
             array(
                 title           => '[3.1.x] Convertors',
                 description     => '',
                 slug            => '3-1-x-convertors',
-                parent_id       => 5
+                parent_id       => 5,
+                depth           => 2
             ),
             array(
                 title           => '[3.1.x] Translations',
                 description     => '',
                 slug            => '3-1-x-translations',
-                parent_id       => 5
+                parent_id       => 5,
+                depth           => 2
             )
         ));
     }

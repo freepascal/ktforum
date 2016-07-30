@@ -19,6 +19,7 @@
     "Materialize": "materialize#^0.97.6",
     "angular": "^1.5.7",
     "angular-ui-router": "^0.3.1",
-    "jwt-decode": "^2.1.0"
+    "jwt-decode": "^2.1.0",
+    "spectre.css": "^0.1.23"
   }
 }

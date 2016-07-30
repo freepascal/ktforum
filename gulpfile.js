@@ -6,7 +6,7 @@ elixir(function(mix) {
     mix.sass('app.scss')
         .styles(
             [
-                'Materialize/dist/css/materialize.min.css'
+                
             ],
             'public/css/app.css',
             bowerDir
@@ -14,8 +14,6 @@ elixir(function(mix) {
 
     mix.scripts(
         [
-            'jquery/dist/jquery.min.js',
-            'Materialize/dist/js/materialize.min.js',
             'angular/angular.min.js',
             'angular-ui-router/release/angular-ui-router.min.js',
             'jwt-decode/build/jwt-decode.min.js'

@@ -1,10 +1,7 @@
-<nav>
-    <div class="nav-wrapper">
-        <a ui-sref="app" class="brand-logo">FreePascal</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a ui-sref="validate_token" class="flow-text">Validate Token</li>
-            <li><a ui-sref="topic_create" class="flow-text">New Topic</a></li>
-            <li><a ui-sref="login" class="flow-text">Login</a></li>
-        </ul>
-    </div>
-</nav>
+<div ng-controller="AppNavbarCtrl as nav" class="pure-u-1 pure-menu pure-menu-horizontal">
+    <a href="pure-menu-link" class="pure-menu-heading pure-menu-link">Home</a>
+    <ul class="pure-menu-list">
+        <li ng-if="nav.user" class="pure-menu-item"><a class="pure-menu-link">[<span ng-bind="nav.user.name"></span>]</a></li>
+        <li ng-if="nav.user == null" class="pure-menu-item"><a href="#login" class="pure-menu-link">Login</a></li>
+    </ul>
+</div>

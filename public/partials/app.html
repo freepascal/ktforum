@@ -1,22 +1,21 @@
-<div class="container-fluid" ng-controller="AppCtrl as app">
-    <div class="row">
-        <div ng-include="'/partials/navbar.html'"></div>
+<div class="pure-g" ng-controller="AppCtrl as app">
+
+    <div ng-include="'partials/navbar.html'"></div>
 
         <!-- recent replies in all categories -->
-        <div class="col l3 m4 s12">
-            <p class="flow-text">Ca khúc Tình Lỡ Cách Xa do ca sĩ Mỹ Tâm thể hiện, thuộc thể loại Nhạc Trẻ. Các bạn có thể nghe, download (tải nhạc) bài hát tinh lo cach xa mp3, playlist/album, MV/Video tinh lo cach xa miễn phí tại NhacCuaTui.com.</p>
-        </div>
+    <div class="pure-u-1 pure-u-md-3-8 pure-u-lg-1-3">
+        <ul class="list round">
+            <li>Ca khúc Tình Lỡ Cách Xa do ca sĩ Mỹ Tâm thể hiện, thuộc thể loại Nhạc Trẻ. Các bạn có thể nghe, download (tải nhạc) bài hát tinh lo cach xa mp3, playlist/album, MV/Video tinh lo cach xa miễn phí tại NhacCuaTui.com.</li>
+        </ul>
+    </div>
 
         <!-- categories section -->
-        <div class="col l9 m8 s12">
-            <ul class="collection">
-                <li class="collection-item avatar" ng-repeat="c in app.categories">
-                    <img src="images/email.png" class="circle" alt="">
-                    <span class="title"><a ui-sref="category({slug:c.slug? c.slug: c.id})"><b ng-bind="c.title" class="flow-text"></b></a></span>
-                    <p ng-bind="c.description" class="flow-text"></p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                </li>
-            </ul>
-        </div>
+    <div class="pure-u-1 pure-u-md-5-8 pure-u-lg-2-3">
+        <ul class="list round border">
+            <li ng-repeat="c in app.categories">
+                <a ui-sref="category({slug:c.slug? c.slug: c.id})"><h3><b ng-bind="c.title"></b></h3></a>
+                <p ng-bind="c.description"></p>
+            </li>
+        </ul>
     </div>
 </div>

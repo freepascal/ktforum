@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug')->unique();
             $table->text('description');
             $table->integer('parent_id')->references('id')->on('categories')->nullable();
+            $table->integer('depth')->default(0);
             $table->timestamps();
         });
     }

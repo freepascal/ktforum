@@ -1,39 +1,40 @@
-<div class="container-fluid" ng-controller="AppCategoryCtrl as appcategory">
-    <div class="row">
+<div class="pure-g" ng-controller="AppCategoryCtrl as appcategory">
         <div ng-include="'partials/navbar.html'"></div>
 
         <!-- recents replies in this category -->
-        <div class="col l3 m4 s12">
+        <div class="pure-u-1 pure-u-md-3-8 pure-u-lg-1-3">
             <p class="flow-text">You may constrain the format of your route parameters using the where method on a route instance. The where method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:</p>
         </div>
 
         <!-- topics section -->
-        <div class="col l9 m8 s12">
+        <div class="pure-u-1 pure-u-md-5-8 pure-u-lg-2-3">
             <!-- forum location -->
-            <nav>
-                <div class="nav-wrapper">
-                    <a href="" class="breadcrumb"><span ng-bind="category.parent.title"></span></a>
-                </div>
-            </nav>
-            <!-- if have sub-categories we list them -->
-            <div class="collapsible popout" data-collapsible="accordion">
+            <ul class="breadcrumb">
+                <li ng-repeat="c in appcategory.breadcrumb">
+                    <a ui-sref="category({slug: c.slug})"><span ng-bind="c.title"></span></a>
+                </li>
+            </ul>
 
-                    <div class="collapsible-header active"><span class="flow-text">Subforums</span></div>
-                    <ul class="collapsible-body collection">
-                        <li class="collection-item avatar" ng-repeat="c in appcategory.subcategories">
-                            <img src="images/email.png" class="circle" alt="">
-                            <span class="title"><a ui-sref="category({slug: c.slug? c.slug: category.id})"><b ng-bind="c.title"></b></a></span>
-                            <p ng-bind="c.description"></p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                        </li>
-                    </ul>
-                
-            </div>
+            <a class="pure-button" ng-if="appcategory.category.subcategories.length > 0">New topic</a>
+            <!-- if have sub-categories we list them -->
+
+            <ul class="list round" ng-show="appcategory.display_subcategories()">
+                <li ng-repeat="c in appcategory.category.subcategories">
+                    <h3><a ui-sref="category({slug: c.slug? c.slug: c.id})"><b ng-bind="c.title"></b></a></h3>
+                    <span ng-bind="c.description"></span>
+                </li>
+            </ul>
+
+            <a class="pure-button">New topic</a>
+
+            <ul class="list round">
+                <li ng-repeat="t in appcategory.category.topics">
+                    <span ng-bind="t.title"></span>
+                </li>
+            </ul>
+
+            <p ng-if="appcategory.category.topics.length == 0">No topic created yet</p>
+            <a class="pure-button">New topic</a>
         </div>
     </div>
 </div>
-<script>
-  $('.collapsible').collapsible({
-    accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-  });
-</script>
