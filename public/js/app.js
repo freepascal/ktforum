@@ -172,6 +172,14 @@ var TopicDetailCtrl = ['$stateParams', function($stateParams) {
 var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootScope', function($http, $window, BACKEND_API, UserService, $rootScope) {
     var self = this;
     self.user = null;
+    self.navitems = [
+        "Angular",
+        "React",
+        "Knockout",
+        "JQuery",
+        "Django",
+        "Laravel"
+    ];
     $http({
         url: BACKEND_API + 'auth/me',
         method: 'GET'

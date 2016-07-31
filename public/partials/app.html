@@ -1,17 +1,16 @@
 <div class="dm-12" ng-controller="AppCtrl as app">
 
-    <!--
     <div ng-include="'partials/navbar.html'"></div>
-    -->
+    
     <!-- recent replies in all categories -->
-    <div class="ds-1 dm-3">
+    <div class="dm-3">
         <ul class="list round">
             <li>Ca khúc Tình Lỡ Cách Xa do ca sĩ Mỹ Tâm thể hiện, thuộc thể loại Nhạc Trẻ. Các bạn có thể nghe, download (tải nhạc) bài hát tinh lo cach xa mp3, playlist/album, MV/Video tinh lo cach xa miễn phí tại NhacCuaTui.com.</li>
         </ul>
     </div>
 
     <!-- categories section -->
-    <div class="ds-1 dm-9">
+    <div class="dm-9">
         <ul class="list round border">
             <li ng-repeat="c in app.categories">
                 <a ui-sref="category({slug:c.slug? c.slug: c.id})"><h3><b ng-bind="c.title"></b></h3></a>
