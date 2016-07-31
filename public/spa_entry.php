@@ -4,8 +4,6 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="/">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
 
     <!-- grids, button, input, table, list, pagination -->
     <link rel="stylesheet" href="css/simplecss.min.css">

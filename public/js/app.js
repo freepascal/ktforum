@@ -121,6 +121,7 @@ var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($statePa
 
 var AppTopicCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
     var self = this;
+    self.topic = {};
     $http({
         url: BACKEND_API + 'topic/' + $stateParams.slug,
         method: 'GET'

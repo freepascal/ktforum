@@ -1,10 +1,16 @@
 <div class="dm-12" ng-controller="AppTopicCtrl as apptopic">
     <div class="offset-1 dm-10">
-        <h3><span ng-bind="apptopic.topic.title"</h3>
-        <p ng-bind="apptopic.topic.body"></p>
+        <div class="round border">
+            <h3><span ng-bind="apptopic.topic.title"></span></h3>
+            <p><span ng-bind="apptopic.topic.body"></span></p>
+        </div>
 
-        <ul class="list round" ng-repeat="r in apptopic.topic.replies">
-            <li><span ng-bind="r.body"</li>
+        <!-- replies in this topic -->
+        <ul class="list round border">
+            <li ng-repeat="r in apptopic.topic.replies"><span ng-bind="r.body"></span></li>
         </ul>
+
+        <textarea class="input" style="width:100%;" placeholder="Your reply content here"></textarea>
+        <a class="btn round">Reply</a>    
     </p>
 </div>
