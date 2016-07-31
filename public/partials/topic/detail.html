@@ -1,0 +1,10 @@
+<div class="dm-12" ng-controller="AppTopicCtrl as apptopic">
+    <div class="offset-1 dm-10">
+        <h3><span ng-bind="apptopic.topic.title"</h3>
+        <p ng-bind="apptopic.topic.body"></p>
+
+        <ul class="list round" ng-repeat="r in apptopic.topic.replies">
+            <li><span ng-bind="r.body"</li>
+        </ul>
+    </p>
+</div>

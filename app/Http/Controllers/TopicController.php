@@ -11,7 +11,16 @@ class TopicController extends Controller
 {
     public function index()
     {
-        return response()->json(array('topics' => Topic::get()));
+        return response()->json(['topics' => Topic::orderBy('id', 'desc')->get()]);
+    }
+
+    public function show($slug)
+    {
+        $topic = Topic::with('replies')->where('slug', '=', $slug)->first();
+        if (!$topic) {
+            $topic = Topic::with('replies')->where('id', '=', $slug)->first();
+        }
+        return response()->json(['topic' => $topic]);
     }
 
     public function store(Request $request)

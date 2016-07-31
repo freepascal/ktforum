@@ -10,4 +10,9 @@ class Topic extends Model
     {
         return $this->belongsTo('App\Category', 'category_id');
     }
+
+    public function replies()
+    {
+        return $this->hasMany('App\Reply');
+    }
 }

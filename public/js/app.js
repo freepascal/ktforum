@@ -41,6 +41,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             controller: 'AppCategoryCtrl',
             templateUrl: '/partials/category/detail.html'
         })
+        .state('topic', {
+            url: '/t/:slug',
+            controller: 'AppTopicCtrl',
+            templateUrl: '/partials/topic/detail.html'
+        })
         .state('topic_create', {
             url: '/create',
             controller: 'TopicCreateCtrl',
@@ -49,6 +54,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
     $locationProvider.html5Mode(true);
 }]);
+
+app.filter('reverse', function() {
+    return function(items) {
+        return items.slice().reverse();
+    };
+});
 
 var AppCtrl = ['$http', 'BACKEND_API', '$scope', function($http, BACKEND_API, $scope) {
     // initialize
@@ -90,12 +101,14 @@ var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($statePa
         function standardize(breadcrumb) {
             result = [], i = 0;
             for(key in breadcrumb) {
-                if (i % 2 == 0) {
+                if (i % 3 == 0) {
                     result.unshift({
                         title: breadcrumb[key]
                     });
+                } else if (i % 3 == 1){
+                    result[0]['slug'] = breadcrumb[key];
                 } else {
-                    result[0]['slug'] = breadcrumb[key]
+                    result[0]['id'] = breadcrumb[key];
                 }
                 ++i;
             }
@@ -103,6 +116,16 @@ var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($statePa
         }
         self.breadcrumb = standardize(res.data.breadcrumb[0]);
         console.log("breadcrumb: " + JSON.stringify(self.breadcrumb));
+    });
+}];
+
+var AppTopicCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
+    var self = this;
+    $http({
+        url: BACKEND_API + 'topic/' + $stateParams.slug,
+        method: 'GET'
+    }).then(function(res) {
+        self.topic = res.data.topic;
     });
 }];
 
@@ -210,6 +233,7 @@ app.controller("AppCtrl", AppCtrl)
     .controller('AuthLoginCtrl', AuthLoginCtrl)
     .controller('ValidateTokenCtrl', ValidateTokenCtrl)
 
+    .controller('AppTopicCtrl', AppTopicCtrl)
     .controller('TopicCreateCtrl', TopicCreateCtrl)
 ;
 

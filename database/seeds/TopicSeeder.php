@@ -26,7 +26,8 @@ class TopicSeeder extends Seeder
                 body    => 'phpBB is a free flat-forum bulletin board software solution that can be used to stay in touch with a group of people or can power your entire website. With an extensive database of user-created modifications and styles database containing hundreds of style and image packages to customise your board, you can create a very unique forum in minutes.
 
 No other bulletin board software offers a greater complement of features, while maintaining efficiency and ease of use. Best of all, phpBB is completely free. We welcome you to test it for yourself today. If you have any questions please visit our Community Forum where our staff and members of the community will be happy to assist you with anything from configuring the software to modifying the code for individual needs. Learn more about phpBB.',
-                user_id => 1
+                user_id => 1,
+                category_id => 1
             ),
             array(
                 title   => 'phpBB 3.2 Rhea is near – help us test it now!',
@@ -44,13 +45,15 @@ We are looking forward to your feedback on the Beta releases and upcoming final 
 If you’d like to get involved with phpBB development to help us finish new features faster, check out the information available on Area51. And lastly, if you’d like to stay up to date on phpBB development progress, follow this blog!
 
 You can follow any responses to this entry through the RSS 2.0 feed. Both comments and pings are currently closed.',
-                user_id => 1
+                user_id => 1,
+                category_id => 1
             ),
             array(
                 title   => 'AutoMOD',
                 slug    => 'automod',
                 body    => 'AutoMOD is a tool designed to parse and automatically install MODX MODifications for phpBB3. It also has the ability to uninstall MODs. It is a useful tool for MOD authors and end users alike: All MODs are installed with AutoMOD prior to being accepted in the MODs Database. As such, any MOD listed in the MOD Database should install with AutoMOD. Support for AutoMOD is available via the forums.',
-                user_id => 1
+                user_id => 1,
+                category_id => 1
             )
         ));
     }

@@ -35,13 +35,13 @@ class CategoryController extends Controller
         if (!$category) {
             $category = Category::where('id', '=', $slug)->first();
         }
-        // query builder
-        $PATTERN_SELECT = "t%d.title AS title%d, t%d.slug AS slug%d, ";
+        // recursive SQL
+        $PATTERN_SELECT = "t%d.title AS title%d, t%d.slug AS slug%d, t%d.id AS id%d, ";
         $PATTERN_JOIN = "INNER JOIN categories AS t%d ON t%d.parent_id = t%d.id ";
         $select = " ";
         $join = " ";
         for($i = 1; $i <= $category->depth + 1; ++$i) {
-            $select .= sprintf($PATTERN_SELECT, $i, $i, $i, $i);
+            $select .= sprintf($PATTERN_SELECT, $i, $i, $i, $i, $i, $i);
         }
         for($i = 1; $i <= $category->depth; ++$i) {
             $join .= sprintf($PATTERN_JOIN, $i+1, $i, $i+1);
