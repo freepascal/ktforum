@@ -21,10 +21,11 @@
 </head>
 <body>
     <div ui-view></div>
-    <script src="js/app.js"></script>
+    <script src="app.js"></script>
     <script src="controllers/app.js"></script>
+    <script src="controllers/appnavbar.js"></script>
     <script src="controllers/appcategory.js"></script>
-    <script src="controllers/apptopic.js"></script>    
+    <script src="controllers/apptopic.js"></script>
     <script src="controllers/login.js"></script>
 </body>
 </html>

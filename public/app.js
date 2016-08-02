@@ -119,27 +119,6 @@ var TopicDetailCtrl = ['$stateParams', function($stateParams) {
     };
 }];
 
-var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootScope', '$auth', function($http, $window, BACKEND_API, UserService, $rootScope, $auth) {
-    var self = this;
-    self.user = null;
-    self.navitems = [
-        "Angular",
-        "React",
-        "Knockout",
-        "JQuery",
-        "Django",
-        "Laravel"
-    ];
-    self.isAuthenticated = function() {
-        return $auth.isAuthenticated();
-    };
-    $http({
-        url: BACKEND_API + 'auth/me',
-        method: 'GET'
-    }).then(function(res) {
-        self.user = res.data.user;
-    });
-}];
 
 
 
@@ -169,7 +148,6 @@ var ValidateTokenCtrl = ['$http', '$window', 'BACKEND_API', function($http, $win
 // DEBUG
 
 app
-    .controller('AppNavbarCtrl', AppNavbarCtrl)
     //.controller('AuthCtrl', AuthCtrl)
     .controller('AuthGoogleCtrl', AuthGoogleCtrl)
     .controller('ValidateTokenCtrl', ValidateTokenCtrl)

@@ -1,9 +1,11 @@
 var LoginCtrl = ['$http', '$window', 'BACKEND_API', '$auth', function($http, $window, BACKEND_API, $auth) {
+    alert("wwhy");
     var self = this;
     self.authenticate = function(provider) {
         $auth.authenticate(provider);
     }
     self.login = function() {
+        alert("You login with email " + self.email);
         console.log('email: ' + self.email);
         console.log('passwd: ' + self.password);
         $http({
