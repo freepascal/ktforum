@@ -1,4 +1,7 @@
-var app = angular.module("app", ['ui.router']);
+var app = angular.module("app", [
+    'ui.router',
+    'satellizer'
+]);
 
 app.value('BACKEND_API', 'api/');
 
@@ -13,6 +16,13 @@ app.config(['$httpProvider', function($httpProvider) {
     });
 }]);
 
+app.config(['$authProvider', function($authProvider) {
+    $authProvider.google({
+        clientId: '1079230626392-gn6agq7cjfamdr8d9ur7o0i7gmb8mdpr.apps.googleusercontent.com'
+        //  JSLFgr_OQiUlws3jgwUdgwJy
+    });
+}]);
+
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
     $urlRouterProvider.otherwise('404');
@@ -23,8 +33,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         })
         .state('login', {
             url: '/login',
-            controller: 'AuthLoginCtrl',
+            controller: 'LoginCtrl as login',
             templateUrl: '/partials/auth/login.html'
+        })
+        .state('auth_google_redirect', {
+            url: '/auth/google',
+            controller: 'AuthGoogleCtrl',
+            templateUrl: '/partials/auth/google.html'
         })
         .state('validate_token', {
             url: '/validate_token',
@@ -33,18 +48,18 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         })
         .state('app', {
             url: '/',
-            controller: 'AppCtrl',
+            controller: 'AppCtrl as app',
             templateUrl: '/partials/app.html'
         })
         .state('category', {
             url: '/c/:slug',
-            controller: 'AppCategoryCtrl',
-            templateUrl: '/partials/category/detail.html'
+            controller: 'AppCategoryCtrl as appcategory',
+            templateUrl: '/partials/appcategory.html'
         })
         .state('topic', {
             url: '/t/:slug',
-            controller: 'AppTopicCtrl',
-            templateUrl: '/partials/topic/detail.html'
+            controller: 'AppTopicCtrl as apptopic',
+            templateUrl: '/partials/apptopic.html'
         })
         .state('topic_create', {
             url: '/create',
@@ -61,74 +76,9 @@ app.filter('reverse', function() {
     };
 });
 
-var AppCtrl = ['$http', 'BACKEND_API', '$scope', function($http, BACKEND_API, $scope) {
-    // initialize
-    var self = this;
-    self.categories = [];
-    $http({
-        url: BACKEND_API + 'category',
-        method: 'GET'
-    }).then(function(res) {
-        self.categories = res.data.categories;
-    });
-}];
 
-var AppAuthCtrl = ['$http', 'BACKEND_API', function($http, BACKEND_API) {
 
-}];
 
-var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($stateParams, $http, BACKEND_API) {
-    var self = this;
-    self.breadcrumb = [];
-    self.category = {};
-    self.display_subcategories = function() {
-        return true;
-    }
-
-    // retrieve specified category and its topics
-    $http({
-        url: BACKEND_API + 'category/' + $stateParams.slug,
-        method: 'GET'
-    }).then(function(res) {
-        self.category = res.data.category;
-    });
-
-    // retrieve forum location
-    $http({
-        url: BACKEND_API + 'category/' + $stateParams.slug + '/breadcrumb',
-        method: 'GET'
-    }).then(function(res) {
-        function standardize(breadcrumb) {
-            result = [], i = 0;
-            for(key in breadcrumb) {
-                if (i % 3 == 0) {
-                    result.unshift({
-                        title: breadcrumb[key]
-                    });
-                } else if (i % 3 == 1){
-                    result[0]['slug'] = breadcrumb[key];
-                } else {
-                    result[0]['id'] = breadcrumb[key];
-                }
-                ++i;
-            }
-            return result;
-        }
-        self.breadcrumb = standardize(res.data.breadcrumb[0]);
-        console.log("breadcrumb: " + JSON.stringify(self.breadcrumb));
-    });
-}];
-
-var AppTopicCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
-    var self = this;
-    self.topic = {};
-    $http({
-        url: BACKEND_API + 'topic/' + $stateParams.slug,
-        method: 'GET'
-    }).then(function(res) {
-        self.topic = res.data.topic;
-    });
-}];
 
 var TopicCreateCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
     var self = this;
@@ -169,7 +119,7 @@ var TopicDetailCtrl = ['$stateParams', function($stateParams) {
     };
 }];
 
-var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootScope', function($http, $window, BACKEND_API, UserService, $rootScope) {
+var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootScope', '$auth', function($http, $window, BACKEND_API, UserService, $rootScope, $auth) {
     var self = this;
     self.user = null;
     self.navitems = [
@@ -180,6 +130,9 @@ var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootSco
         "Django",
         "Laravel"
     ];
+    self.isAuthenticated = function() {
+        return $auth.isAuthenticated();
+    };
     $http({
         url: BACKEND_API + 'auth/me',
         method: 'GET'
@@ -188,29 +141,11 @@ var AppNavbarCtrl = ['$http', '$window', 'BACKEND_API', 'UserService', '$rootSco
     });
 }];
 
-// AUTHENTICATION
-var AuthLoginCtrl = ['$http', '$window', 'BACKEND_API', function($http, $window, BACKEND_API) {
-    this.login = function() {
-        console.log('email: ' + this.email);
-        console.log('passwd: ' + this.password);
-        $http({
-            url: BACKEND_API + 'auth/login',
-            method: 'POST',
-            data: {
-                email: this.email,
-                password: this.password
-            }
-        }).then(function(response) {
-            if (response.data.token) {
-                $window.localStorage.setItem('token', response.data.token);
-                alert("Save token successfully");
-                alert("token:" + response.data.token);
-                console.log("token:"+response.data.token);
-            }
-        }, function errorCallback() {
-            alert("errorCallback");
-        });
-    };
+
+
+var AuthGoogleCtrl = ['$stateParams', function($stateParams) {
+    var self = this;
+    alert($stateParams.code);
 }];
 
 var ValidateTokenCtrl = ['$http', '$window', 'BACKEND_API', function($http, $window, BACKEND_API) {
@@ -233,16 +168,11 @@ var ValidateTokenCtrl = ['$http', '$window', 'BACKEND_API', function($http, $win
 
 // DEBUG
 
-app.controller("AppCtrl", AppCtrl)
-    .controller('AppAuthCtrl', AppAuthCtrl)
+app
     .controller('AppNavbarCtrl', AppNavbarCtrl)
-    .controller('AppCategoryCtrl', AppCategoryCtrl)
-
-    // AUTHENTICATION
-    .controller('AuthLoginCtrl', AuthLoginCtrl)
+    //.controller('AuthCtrl', AuthCtrl)
+    .controller('AuthGoogleCtrl', AuthGoogleCtrl)
     .controller('ValidateTokenCtrl', ValidateTokenCtrl)
-
-    .controller('AppTopicCtrl', AppTopicCtrl)
     .controller('TopicCreateCtrl', TopicCreateCtrl)
 ;
 

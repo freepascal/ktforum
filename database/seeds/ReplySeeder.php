@@ -14,9 +14,9 @@ class ReplySeeder extends Seeder
         define('body', 'body');
         define('topic_id', 'topic_id');
         define('user_id', 'user_id');
-        for($i = 1; $i <= 1000; $i++) {
+        for($i = 1; $i <= 3000; $i++) {
             DB::table('replies')->insert(array(
-                body => 'Reply #'. $i,
+                body => 'KtForum will change the world =)). This is reply # '. $i,
                 topic_id => 1,
                 user_id => 2
             ));
