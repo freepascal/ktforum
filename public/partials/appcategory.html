@@ -1,44 +1,47 @@
-<div class="dm-12">
-        <div ng-include="'partials/navbar.html'"></div>
-        <!-- recents replies in this category -->
-        <div class="dm-3">
-            <ul class="list round">
-                <li>You may constrain the format of your route parameters using the where method on a route instance. The where method accepts the name of the parameter and a regular expression defining how the parameter should be constrained</li>
-            </ul>
-        </div>
+<div ng-include="'partials/appnavbar.html'"></div>
 
-        <!-- topics section -->
-        <div class="dm-9">
+<div class="container container-layout" ng-controller="AppCategoryCtrl as appcategory">
+        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <!-- forum location -->
-            <p>
-                <ul class="breadcrumb">
-                    <li><a ui-sref="app()">Home</li>
-                    <li ng-repeat="c in appcategory.breadcrumb">
-                        <a ui-sref="category({slug: c.slug? c.slug: c.id})"><span ng-bind="c.title"></span></a>
-                    </li>
-                </ul>
-            </p>
-            <a class="btn round" ng-if="appcategory.category.subcategories.length > 0">New topic</a>
+
+            <ol class="breadcrumb">
+                <li><a ui-sref="app()">Home</a></li>
+                <li ng-repeat="c in appcategory.breadcrumb">
+                    <a ui-sref="category({slug: c.slug? c.slug: c.id})"><span ng-bind="c.title"></span></a>
+                </li>
+
+                <!-- toggle displaying sub-forums -->
+                <span class="pull-right">
+                    <a href="javascript:void(0)" ng-click="appcategory.subforumsExpandableIcon.toggle()" data-toggle="collapse" data-target="#subforums">
+                        <img id="collapsible" src="images/minus-icon.png" alt="Show/hide subforums" width="20px">
+                    </a>
+                </span>
+            </ol>
 
             <!-- if have sub-categories we list them -->
-            <ul class="list round border" ng-show="appcategory.display_subcategories()">
-                <li ng-repeat="c in appcategory.category.subcategories">
-                    <h3><a ui-sref="category({slug: c.slug? c.slug: c.id})"><b ng-bind="c.title"></b></a></h3>
-                    <span ng-bind="c.description"></span>
-                </li>
-            </ul>
+                <ul class="list-group" id="subforums" class="collapse">
+                    <li class="list-group-item" ng-class="{'list-group-item-warning': $index == 0}" ng-repeat="c in appcategory.category.subcategories">
+                        <h3>
+                            <a ui-sref="category({slug: c.slug? c.slug: c.id})"><b ng-bind="c.title"></b></a>
+                        </h3>
+                        <span ng-bind="c.description"></span>
+                    </li>
+                </ul>
 
-            <a class="btn round">New topic</a>
+
+
+            <a class="btn btn-primary btn-round-sm">New topic</a>
 
             <!-- topics in this category -->
-            <ul class="list round border">
-                <li ng-repeat="t in appcategory.category.topics">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="t in appcategory.category.topics">
                     <a ui-sref="topic({slug: t.slug? t.slug: t.id})"><span ng-bind="t.title"></span></a>
                 </li>
             </ul>
 
             <p ng-if="appcategory.category.topics.length == 0">No topic created yet</p>
-            <a class="btn round">New topic</a>
+
+            <a class="btn btn-primary btn-round-sm">New topic</a>
         </div>
     </div>
 </div>

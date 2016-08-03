@@ -14,10 +14,20 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <!-- grids, button, input, table, list, pagination -->
+    <!--
     <link rel="stylesheet" href="dist/css/simplecss.min.css">
-
+    -->
+    
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        .container-layout {
+            padding-top: 80px;
+        }
+        body {
+            font-family: Verdana;
+        }
+    </style>
 </head>
 <body>
     <div ui-view></div>

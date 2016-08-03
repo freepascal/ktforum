@@ -2,9 +2,21 @@ var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($statePa
     var self = this;
     self.breadcrumb = [];
     self.category = {};
-    self.display_subcategories = function() {
-        return true;
-    }
+    self.subforumsExpandableIcon = {
+        state: true, // true if we can expand subforum list
+        toggle: function() {
+            if (self.subforumsExpandableIcon.state) {
+                angular.element("#collapsible").attr({
+                    'src': 'images/plus-icon.png'
+                });
+            } else {
+                angular.element("#collapsible").attr({
+                    'src': 'images/minus-icon.png'
+                });
+            }
+            self.subforumsExpandableIcon.state = !self.subforumsExpandableIcon.state;
+        }
+    };
 
     // retrieve specified category and its topics
     $http({

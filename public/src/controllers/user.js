@@ -9,7 +9,7 @@ var UserCtrl = function($http, $auth, BACKEND_API) {
     }).then(function successCallback(response) {
         self.me = response.data.user;
     }, function errorCallback(response) {
-        alert(response.data);
+
     });
 };
 

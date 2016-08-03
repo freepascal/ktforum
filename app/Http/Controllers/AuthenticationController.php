@@ -83,39 +83,6 @@ class AuthenticationController extends Controller
         return response()->json(['token_status' => "invalid"]);
     }
 
-    // somewhere in your controller
-    public function getAuthenticatedUser(Request $request)
-    {
-        if ($request->header('Authorization')) {
-            Log::info('CO header');
-        } else {
-            Log::info('KO co header!');
-            Log::info($request->header());
-            var_dump($request->header());
-        }
-        try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            }
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->json(['token_expired'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->json(['token_invalid'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->json(['token_absent'], $e->getStatusCode());
-
-        }
-
-        // the token is valid and we have found the user via the sub claim
-        return response()->json(compact('user'));
-    }
-
     public function header(Request $request)
     {
         $header = $request->header();

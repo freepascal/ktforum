@@ -1,8 +1,8 @@
 <div ng-include="'partials/modals/login.html'"></div>
 <div ng-include="'partials/modals/register.html'"></div>
 
-<div class="dm-12">
-	<nav class="navbar navbar-inverse">
+<div class="container">
+	<nav class="navbar navbar-inverse navbar-fixed-top" id="my_nav">
 	 	<div class="container-fluid">
 	    <div class="navbar-header">
 	    	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -10,7 +10,7 @@
 	        	<span class="icon-bar"></span>
 	        	<span class="icon-bar"></span>
 	      	</button>
-	      	<a class="navbar-brand" href="#">WebSiteName</a>
+	      	<a class="navbar-brand" ui-sref="app()">The holy land of FreePascal</a>
 		</div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 	      	<ul class="nav navbar-nav">
@@ -26,7 +26,6 @@
 	        	<li><a href="#">Page 2</a></li>
 	        	<li><a href="#">Page 3</a></li>
 	      	</ul>
-
 			<div ng-controller="UserCtrl as user">
 	    		<ul class="nav navbar-nav navbar-right"  ng-if="!user.isAuthenticated()">
 	        		<li><a href="" data-toggle="modal" data-target="#m_register"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
@@ -47,7 +46,6 @@
 					</li>
 				</ul>
 			</div>
-
 	    </div>
 	  </div>
 	</nav>
