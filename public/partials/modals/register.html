@@ -1,0 +1,26 @@
+<div id="m_register" class="modal fade" role="dialog" ng-controller="RegisterCtrl as register">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="pull-right" href="javascript:void(0)" data-dismiss="modal">X</a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" id="email" ng-model="register.email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" id="password" ng-model="register.password">
+                </div>
+                <div class="form-group">
+                    <label for="password_again">Password again</label>
+                    <input type="password" name="password_again" class="form-control" id="password_again" ng-model="register.password_again">
+                </div>
+                <div class="form-group">
+                    <button type="button" ng-click="register.register()" class="btn btn-primary form-control">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

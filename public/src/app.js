@@ -5,36 +5,31 @@ var app = angular.module("app", [
 
 app.value('BACKEND_API', 'api/');
 
+/*
+angular.module('app').run(function($http, $window) {
+  $http.defaults.headers.common.Authorization = 'Authorization: Bearer ' + $window.localStorage.getItem("satellizer_token");;
+});
+
 app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push(function($window) {
         return {
             'request': function(config) {
-                config.headers['Authorization'] = 'bearer ' + $window.localStorage.getItem("token");
+                config.headers['Authorization'] = 'bearer ' + $window.localStorage.getItem("satellizer_token");
                 return config;
             }
         };
     });
 }]);
+*/
 
-app.config(['$authProvider', function($authProvider) {
-    $authProvider.google({
-        clientId: '1079230626392-gn6agq7cjfamdr8d9ur7o0i7gmb8mdpr.apps.googleusercontent.com'
-        //  JSLFgr_OQiUlws3jgwUdgwJy
-    });
-}]);
-
-app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider, $authProvider) {
 
     $urlRouterProvider.otherwise('404');
     $stateProvider
         .state('404', {
             url: '/404',
             templateUrl: '/partials/404.html'
-        })
-        .state('login', {
-            url: '/login',
-            controller: 'LoginCtrl as login',
-            templateUrl: '/partials/auth/login.html'
         })
         .state('auth_google_redirect', {
             url: '/auth/google',
@@ -65,9 +60,23 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             url: '/create',
             controller: 'TopicCreateCtrl',
             templateUrl: '/partials/topic/create.html'
+        })
+        .state('header', {
+            url: '/header',
+            controller: 'HeaderCtrl as header',
+            templateUrl: '/partials/test/header.html'
         });
 
     $locationProvider.html5Mode(true);
+
+    $authProvider.loginUrl = 'api/auth/login';
+    $authProvider.signupUrl = 'api/auth/signup';
+    //$authProvider.tokenPrefix = null;
+
+    $authProvider.google({
+        clientId: '1079230626392-gn6agq7cjfamdr8d9ur7o0i7gmb8mdpr.apps.googleusercontent.com'
+        //  JSLFgr_OQiUlws3jgwUdgwJy
+    });
 }]);
 
 app.filter('reverse', function() {
@@ -140,8 +149,9 @@ var ValidateTokenCtrl = ['$http', '$window', 'BACKEND_API', function($http, $win
         url: BACKEND_API + 'auth/validate_token',
         method: 'GET'
     }).then(function(response) {
-        self.token_status = response.data.token;
+        self.token_status = response.data.token_status;
     }, function(response) {
+        self.token_status = "co loi xay ra cmnr khi $http.get()!";
     });
 }];
 

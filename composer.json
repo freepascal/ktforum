@@ -7,7 +7,9 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "tymon/jwt-auth": "0.5.*"
+        "firebase/php-jwt": "^4.0",
+        "tymon/jwt-auth": " 0.5.*",
+        "barryvdh/laravel-cors": "^0.8.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

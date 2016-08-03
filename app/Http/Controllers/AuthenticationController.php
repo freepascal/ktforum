@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use JWTAuth;
+use App\User;
+use Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Log;
 
 class AuthenticationController extends Controller
 {
@@ -16,11 +19,11 @@ class AuthenticationController extends Controller
         try {
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                return response()->json(['error' => 'Invalid credentials'], 401);
             }
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return response()->json(['error' => 'Could not create token'], 500);
         }
 
         // all good so return the token
@@ -29,7 +32,20 @@ class AuthenticationController extends Controller
 
     public function register(Request $request)
     {
-
+        $validator = Validator::make($request->all(), array(
+            'email' => 'required|email|unique:users,email',
+            'password'  => 'required|min:8',
+        ));
+        if ($validator->fails()) {
+            return response()->json(array('message' => $validator->messages()), 400);
+        }
+        $user = new User;
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+        return response()->json(array(
+            'token' => $this->jwtauth->setRequest($request)->fromUser($user)
+        ));
     }
 
     /**
@@ -56,13 +72,56 @@ class AuthenticationController extends Controller
     {
         $user = null;
         try {
+            //$user = JWTAuth::setRequest($request)->parseToken()->authenticate();
             $user = JWTAuth::parseToken()->authenticate();
-        } catch(Exception $e) {
+        } catch(JWTException $e) {
+            return response()->json(['token_status' => "jwtexception"]);
+        }
+        if ($user != null) {
+            return response()->json(['token_status' => "valid"]);
+        }
+        return response()->json(['token_status' => "invalid"]);
+    }
+
+    // somewhere in your controller
+    public function getAuthenticatedUser(Request $request)
+    {
+        if ($request->header('Authorization')) {
+            Log::info('CO header');
+        } else {
+            Log::info('KO co header!');
+            Log::info($request->header());
+            var_dump($request->header());
+        }
+        try {
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+            return response()->json(['token_expired'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+            return response()->json(['token_invalid'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+            return response()->json(['token_absent'], $e->getStatusCode());
 
         }
-        if ($user) {
-            return response()->json(['token_status' => true]);
-        }
-        return response()->json(['token_status' => false]);
+
+        // the token is valid and we have found the user via the sub claim
+        return response()->json(compact('user'));
+    }
+
+    public function header(Request $request)
+    {
+        $header = $request->header();
+        return response()->json(array(
+            'header' => $header,
+            'authorization' => isset($header['authorization'])? $header['authorization']: 'none'
+        ));
     }
 }

@@ -1,4 +1,5 @@
-<div ng-include="'partials/auth/login.html'"></div>
+<div ng-include="'partials/modals/login.html'"></div>
+<div ng-include="'partials/modals/register.html'"></div>
 
 <div class="dm-12">
 	<nav class="navbar navbar-inverse">
@@ -25,13 +26,28 @@
 	        	<li><a href="#">Page 2</a></li>
 	        	<li><a href="#">Page 3</a></li>
 	      	</ul>
-	    	<ul class="nav navbar-nav navbar-right">
-	        	<li><a href="" data-toggle="modal"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-	        	<li><a href="" data-toggle="modal" data-target="#m_login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
-	      	</ul>
-			<ul class="nav navbar-nav navbar-right" ng-if="appnav.isAuthenticated()">
-				<li><a href="">Logged in</a></li>
-			</ul>
+
+			<div ng-controller="UserCtrl as user">
+	    		<ul class="nav navbar-nav navbar-right"  ng-if="!user.isAuthenticated()">
+	        		<li><a href="" data-toggle="modal" data-target="#m_register"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+	        		<li><a href="" data-toggle="modal" data-target="#m_login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+	      		</ul>
+				<ul class="nav navbar-nav navbar-right"  ng-if="user.isAuthenticated()">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">
+							[<span ng-bind="user.me.name"></span>]
+						</a>
+						<ul class="dropdown-menu">
+							<li ng-controller="LogoutCtrl as logout">
+								<a href="javascript:void(0)" ng-click="logout.logout()">
+									<span class="glyphicon glyphicon-log-out">Logout</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
 	    </div>
 	  </div>
 	</nav>
