@@ -6,12 +6,34 @@ use Illuminate\Http\Request;
 use Log;
 use JWTAuth;
 use App\Topic;
+use App\Category;
 
 class TopicController extends Controller
 {
     public function index()
     {
         return response()->json(['topics' => Topic::orderBy('id', 'desc')->get()]);
+    }
+
+    public function paginate($category_id, $page_current, $page_capacity)
+    {
+        // if $category is slug
+        $category = Category::where('slug', '=', $category_id)->first();
+        if ($category) {
+            $category_id = $category->id;
+        }
+
+        $topics = Topic::with('category')->with('user')->where('category_id', '=', $category_id)->orderBy('id', 'desc');
+        $total_topics = $topics->count();
+        $page_topics = $topics
+                        ->skip($page_capacity*($page_current-1))
+                        ->take($page_capacity)
+                        ->get();
+
+        return response()->json(array(
+            'page_topics' => $page_topics,
+            'total_topics' => $total_topics
+        ));
     }
 
     public function show($slug)

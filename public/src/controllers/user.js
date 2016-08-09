@@ -1,15 +1,19 @@
-var UserCtrl = function($http, $auth, BACKEND_API) {
-    var self = this;
-    self.isAuthenticated = function() {
+var UserCtrl = function($scope, $auth, $http, BACKEND_API) {
+    $scope.isAuthenticated =function() {
         return $auth.isAuthenticated();
-    };
-    $http({
-        url: BACKEND_API + 'auth/me',
-        method: 'GET'
-    }).then(function successCallback(response) {
-        self.me = response.data.user;
-    }, function errorCallback(response) {
+    }
 
+    $scope.$watch(function($scope) {
+        return $auth.isAuthenticated();
+    }, function(val) {
+        if (val == true) {
+            $http({
+                url: BACKEND_API + 'auth/me',
+                method: 'POST'
+            }).then(function(response) {
+                $scope.me = response.data.user;
+            });
+        }
     });
 };
 

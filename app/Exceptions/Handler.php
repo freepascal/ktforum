@@ -47,7 +47,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($e instanceof NotFoundHttpException /*|| $e instanceof MethodNotAllowedHttpException*/) {
+        if ($e instanceof NotFoundHttpException
+            || $e instanceof MethodNotAllowedHttpException
+            || $e instanceof \Tymon\JWTAuth\Exceptions\JWTException
+        ) {
             return response()->view('index');
         }
         if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {

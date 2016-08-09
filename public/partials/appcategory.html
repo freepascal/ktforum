@@ -1,47 +1,56 @@
 <div ng-include="'partials/appnavbar.html'"></div>
 
 <div class="container container-layout" ng-controller="AppCategoryCtrl as appcategory">
-        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
-            <!-- forum location -->
+    <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <!-- forum location -->
+        <ol class="breadcrumb">
+            <li><a ui-sref="app()">Home</a></li>
+            <li ng-repeat="c in appcategory.breadcrumb">
+                <a ui-sref="category({slug: c.slug? c.slug: c.id})"><span ng-bind="c.title"></span></a>
+            </li>
+            <!-- toggle displaying sub-forums -->
+            <span class="pull-right">
+                <a href="javascript:void(0)" ng-click="appcategory.subforumsExpandableIcon.toggle()" data-toggle="collapse" data-target="#subforums">
+                    <img id="collapsible" src="images/minus-icon.png" alt="Show/hide subforums" width="20px">
+                </a>
+            </span>
+        </ol>
 
-            <ol class="breadcrumb">
-                <li><a ui-sref="app()">Home</a></li>
-                <li ng-repeat="c in appcategory.breadcrumb">
-                    <a ui-sref="category({slug: c.slug? c.slug: c.id})"><span ng-bind="c.title"></span></a>
-                </li>
+        <!-- if have sub-categories we list them -->
+        <ul class="list-group" id="subforums" class="collapse">
+            <li class="list-group-item" ng-class="{'list-group-item-warning': $index == 0}" ng-repeat="c in appcategory.category.subcategories">
+                <h3>
+                    <a ui-sref="category({slug: c.slug? c.slug: c.id})"><b ng-bind="c.title"></b></a>
+                </h3>
+                <span ng-bind="c.description"></span>
+            </li>
+        </ul>
 
-                <!-- toggle displaying sub-forums -->
-                <span class="pull-right">
-                    <a href="javascript:void(0)" ng-click="appcategory.subforumsExpandableIcon.toggle()" data-toggle="collapse" data-target="#subforums">
-                        <img id="collapsible" src="images/minus-icon.png" alt="Show/hide subforums" width="20px">
-                    </a>
-                </span>
-            </ol>
+        <a class="btn btn-primary btn-round-sm">New topic</a>
+        <ul class="pagination pull-right">
+            <li ng-repeat="page in []| range:appcategory.topicPaginator.total_pages">
+                <a href="javascript:void(0)" ng-class="{active: page == appcategory.topicPaginator.page_current}" ng-click="appcategory.topicPaginator.toPage(page)">{{ page }}</a>
+            </li>
+        </ul>
 
-            <!-- if have sub-categories we list them -->
-                <ul class="list-group" id="subforums" class="collapse">
-                    <li class="list-group-item" ng-class="{'list-group-item-warning': $index == 0}" ng-repeat="c in appcategory.category.subcategories">
-                        <h3>
-                            <a ui-sref="category({slug: c.slug? c.slug: c.id})"><b ng-bind="c.title"></b></a>
-                        </h3>
-                        <span ng-bind="c.description"></span>
-                    </li>
-                </ul>
+        <!-- topics in this category -->
+        <!--
+        <ul class="list-group" style="padding-top:15px;">
+            <li class="list-group-item" ng-repeat="t in appcategory.category.topics">
+                <a ui-sref="topic({slug: t.slug? t.slug: t.id})"><span ng-bind="t.title"></span></a>
+            </li>
+        </ul>
+        <p ng-if="appcategory.category.topics.length == 0">No topic created yet</p>
+        -->
 
+        <ul class="list-group" style="padding-top:15px;">
+            <li class="list-group-item" ng-repeat="t in appcategory.topicPaginator.page_topics">
+                <a ui-sref="topic({slug: t.slug? t.slug: t.id})"><span ng-bind="t.title"></span></a>
+            </li>
+        </ul>
 
-
-            <a class="btn btn-primary btn-round-sm">New topic</a>
-
-            <!-- topics in this category -->
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="t in appcategory.category.topics">
-                    <a ui-sref="topic({slug: t.slug? t.slug: t.id})"><span ng-bind="t.title"></span></a>
-                </li>
-            </ul>
-
-            <p ng-if="appcategory.category.topics.length == 0">No topic created yet</p>
-
-            <a class="btn btn-primary btn-round-sm">New topic</a>
-        </div>
+        <p ng-if="appcategory.topicPaginator.total_topics == 0">No topic created</p>
+        
+        <a class="btn btn-primary btn-round-sm" style="padding-top:0px;">New topic</a>
     </div>
 </div>

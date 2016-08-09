@@ -3,7 +3,7 @@ var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($statePa
     self.breadcrumb = [];
     self.category = {};
     self.subforumsExpandableIcon = {
-        state: true, // true if we can expand subforum list
+        state: false, // true if is minus-icon
         toggle: function() {
             if (self.subforumsExpandableIcon.state) {
                 angular.element("#collapsible").attr({
@@ -50,6 +50,36 @@ var AppCategoryCtrl = ['$stateParams', '$http', 'BACKEND_API', function($statePa
         self.breadcrumb = standardize(res.data.breadcrumb[0]);
         console.log("breadcrumb: " + JSON.stringify(self.breadcrumb));
     });
+
+    // initialize topic Paginator
+    self.topicPaginator = {
+        page_current: 1,
+        page_capacity: 5
+    };
+
+    self.topicPaginator.paginate = function() {
+        console.log('topicPaginator: (page: ' + this.page_current + ', capacity: ' + this.page_capacity + ')');
+        var self = this;
+        url = BACKEND_API + 'topic/paginate/'
+                            + $stateParams.slug + '/'
+                            + this.page_current + '/'
+                            + this.page_capacity;
+        $http({
+            url: url,
+            method: 'GET'
+        }).then(function(response) {
+            self.page_topics = response.data.page_topics;
+            self.total_topics = response.data.total_topics;
+            self.total_pages = Math.ceil(self.total_topics/self.page_capacity);
+        });
+    };
+
+    self.topicPaginator.toPage = function(page_current) {
+        this.page_current = page_current;
+        this.paginate();
+    };
+
+    self.topicPaginator.paginate();
 }];
 
 angular.module("app").controller("AppCategoryCtrl", AppCategoryCtrl);

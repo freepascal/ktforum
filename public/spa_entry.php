@@ -17,7 +17,7 @@
     <!--
     <link rel="stylesheet" href="dist/css/simplecss.min.css">
     -->
-    
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
@@ -45,5 +45,9 @@
     <script src="src/controllers/register.js"></script>
     <script src="src/controllers/user.js"></script>
     <script src="src/controllers/header.js"></script>
+
+    <script src="src/services/user.js"></script>
+    <script src="src/filters/reverse.js"></script>
+    <script src="src/filters/range.js"></script>
 </body>
 </html>

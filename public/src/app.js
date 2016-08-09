@@ -1,6 +1,6 @@
 var app = angular.module("app", [
     'ui.router',
-    'satellizer'
+    'satellizer',
 ]);
 
 app.value('BACKEND_API', 'api/');
@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
 
     $urlRouterProvider.otherwise('404');
     $stateProvider
-        .state('404', {
+        .state('p404', {
             url: '/404',
             templateUrl: '/partials/404.html'
         })
@@ -59,7 +59,18 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
         .state('topic_create', {
             url: '/create',
             controller: 'TopicCreateCtrl',
-            templateUrl: '/partials/topic/create.html'
+            templateUrl: '/partials/topic/create.html',
+            resolve: {
+                loginRequired: function($auth, $q, $state, $location) {
+                    var deferred = $q.defer();
+                    if ($auth.isAuthenticated()) {
+                        deferred.resolve();
+                    } else {
+                        angular.element('#m_login').modal('toggle');
+                    }
+                    return deferred.promise;
+                }
+            }
         })
         .state('header', {
             url: '/header',
@@ -78,16 +89,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
         //  JSLFgr_OQiUlws3jgwUdgwJy
     });
 }]);
-
-app.filter('reverse', function() {
-    return function(items) {
-        return items.slice().reverse();
-    };
-});
-
-
-
-
 
 var TopicCreateCtrl = ['$http', '$stateParams', 'BACKEND_API', function($http, $stateParams, BACKEND_API) {
     var self = this;
@@ -163,14 +164,3 @@ app
     .controller('ValidateTokenCtrl', ValidateTokenCtrl)
     .controller('TopicCreateCtrl', TopicCreateCtrl)
 ;
-
-app.factory("UserService", ['$http', 'BACKEND_API', function($http, BACKEND_API) {
-    var factory = {};
-    factory.getUser = function() {
-        return $http({
-            url: BACKEND_API + 'auth/me',
-            method: 'GET'
-        });
-    };
-    return factory;
-}]);

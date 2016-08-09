@@ -2,7 +2,7 @@
 <div ng-include="'partials/modals/register.html'"></div>
 
 <div class="container">
-	<nav class="navbar navbar-inverse navbar-fixed-top" id="my_nav">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 	 	<div class="container-fluid">
 	    <div class="navbar-header">
 	    	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -27,14 +27,14 @@
 	        	<li><a href="#">Page 3</a></li>
 	      	</ul>
 			<div ng-controller="UserCtrl as user">
-	    		<ul class="nav navbar-nav navbar-right"  ng-if="!user.isAuthenticated()">
+	    		<ul class="nav navbar-nav navbar-right"  ng-if="!isAuthenticated()">
 	        		<li><a href="" data-toggle="modal" data-target="#m_register"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
 	        		<li><a href="" data-toggle="modal" data-target="#m_login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
 	      		</ul>
-				<ul class="nav navbar-nav navbar-right"  ng-if="user.isAuthenticated()">
+				<ul class="nav navbar-nav navbar-right"  ng-if="isAuthenticated()">
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">
-							[<span ng-bind="user.me.name"></span>]
+							[<span ng-bind="me.name"></span>]
 						</a>
 						<ul class="dropdown-menu">
 							<li ng-controller="LogoutCtrl as logout">

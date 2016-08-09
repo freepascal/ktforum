@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         return response()->json(array(
-            'categories' => Category::with('parent')->with('subcategories')->with('topics')->where('parent_id', '=', null)->get()
+            'categories' => $this->getOr404(Category::with('parent')->with('subcategories')->with('topics')->where('parent_id', '=', null)->get())
         ));
     }
 
@@ -25,7 +25,7 @@ class CategoryController extends Controller
             $category_id = $category->id;
         }
         return response()->json(array(
-            'subcategories' => Category::with('parent')->with('subcategories')->with('topics')->where('parent_id', '=', $category_id)->get()
+            'subcategories' => $this->getOr404(Category::with('parent')->with('subcategories')->with('topics')->where('parent_id', '=', $category_id)->get())
         ));
     }
 
@@ -50,7 +50,7 @@ class CategoryController extends Controller
             ."FROM categories as t1"
             .$join
             ."WHERE t1.id = ". $category->id;
-        $result = DB::select(DB::raw($query));
+        $result = $this->getOr404(DB::select(DB::raw($query)));
         return response()->json(['breadcrumb' => $result]);
     }
 
@@ -58,7 +58,7 @@ class CategoryController extends Controller
     {
         $category = Category::with('subcategories')->with('topics')->where('slug', '=', $slug)->first();
         if (!$category) {
-            $category = Category::with('subcategories')->with('topics')->where('id', '=', $slug)->first();
+            $category = $this->getOr404(Category::with('subcategories')->with('topics')->where('id', '=', $slug)->first());
         }
         return response()->json(array(
             'category'  => $category

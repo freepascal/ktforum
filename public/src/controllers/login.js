@@ -1,17 +1,14 @@
-var LoginCtrl = function($http, $window, BACKEND_API, $auth, $state) {
+var LoginCtrl = function($auth) {
     var self = this;
-    self.user = { };
     self.authenticate = function(provider) {
         $auth.authenticate(provider);
     };
     self.login = function() {
-        $auth
-            .login(self.user)
+        $auth.login(self.user)
             .then(function successCallback(response) {
                 console.log(response);
                 $auth.setToken(response);
-                // close login modal
-                angular.element('#m_login').modal('toggle');
+                angular.element('#m_login').modal('toggle'); // close modal login
                 toastr.success('Login successfully');
             })
             .catch(function(response) {

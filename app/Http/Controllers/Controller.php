@@ -12,4 +12,12 @@ use View;
 class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
+
+    public function getOr404($result)
+    {
+        if ($result == null) {
+            return response()->json(['message' => 'page_not_found']);
+        }
+        return $result;
+    }
 }
