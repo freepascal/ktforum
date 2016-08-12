@@ -1,4 +1,4 @@
-<div id="m_login" class="modal fade" role="dialog" ng-controller="LoginCtrl as login">
+<div id="m_login" class="modal fade" role="dialog" ng-controller="UserCtrl as user">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,21 +7,21 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" ng-model="login.user.email">
+                    <input type="email" class="form-control" id="email" ng-model="user.user.email">
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password</label>
-                    <input type="password" class="form-control" id="pwd" ng-model="login.user.password">
+                    <input type="password" class="form-control" id="pwd" ng-model="user.user.password">
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" ng-click="login.login()">Login</button>
+                    <button type="button" class="btn btn-primary" ng-click="user.login()">Login</button>
                 <div>
                 <div class="form-group">
             </div>
             <div class="modal-footer">
                 <div class="form-group">Or login via</div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-info" ng-click="login.authenticate('google')">Google</button>
+                    <button type="button" class="btn btn-info" ng-click="user.authenticate('google')">Google</button>
                 </div>
             </div>
         </div>

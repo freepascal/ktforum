@@ -56,6 +56,14 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
             controller: 'AppTopicCtrl as apptopic',
             templateUrl: '/partials/apptopic.html'
         })
+        .state('ucp', {
+            url: '/ucp',
+            controller: 'UserCtrl as user',
+            templateUrl: '/partials/ucp.html',
+            resolve: {
+
+            }
+        })
         .state('topic_create', {
             url: '/create',
             controller: 'TopicCreateCtrl',
@@ -80,6 +88,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
 
     $locationProvider.html5Mode(true);
 
+    //function loginRequired($auth, $q, $state, $location)
     $authProvider.loginUrl = 'api/auth/login';
     $authProvider.signupUrl = 'api/auth/signup';
     //$authProvider.tokenPrefix = null;

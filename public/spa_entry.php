@@ -40,8 +40,6 @@
     <script src="src/controllers/app.js"></script>
     <script src="src/controllers/appcategory.js"></script>
     <script src="src/controllers/apptopic.js"></script>
-    <script src="src/controllers/login.js"></script>
-    <script src="src/controllers/logout.js"></script>
     <script src="src/controllers/register.js"></script>
     <script src="src/controllers/user.js"></script>
     <script src="src/controllers/header.js"></script>

@@ -16,8 +16,25 @@ class Controller extends BaseController
     public function getOr404($result)
     {
         if ($result == null) {
-            return response()->json(['message' => 'page_not_found']);
+            return response()->json(['error' => 'page_not_found']);
         }
         return $result;
+    }
+
+    /**
+    * return user if he logged on
+    * else throws JWTException
+    **/
+    public function authenticate($error = '')
+    {
+        $user = null;
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch(JWTException $e) {
+            return response()->json(array(
+                'error' => $error? $error: 'JWTException'
+            ));
+        }
+        return $user;
     }
 }
