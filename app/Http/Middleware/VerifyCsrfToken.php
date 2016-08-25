@@ -18,7 +18,7 @@ class VerifyCsrfToken extends BaseVerifier
 
     public function handle($request, Closure $next)
     {
-        if($request->method() == 'POST') {
+        if($request->method() == 'POST' || $request->method() == 'PUT') {
             return $next($request);
         }
         if ($request->method() == 'GET' || $this->tokensMatch($request))

@@ -35,17 +35,25 @@
     <!-- vendor -->
     <script src="dist/js/lib.js"></script>
     <script src="vendor/underscore.js"></script>
+    <script src="vendor/angular-bootstrap-file-field.js"></script>
 
     <script src="src/app.js"></script>
     <script src="src/controllers/app.js"></script>
     <script src="src/controllers/appcategory.js"></script>
     <script src="src/controllers/apptopic.js"></script>
     <script src="src/controllers/register.js"></script>
-    <script src="src/controllers/user.js"></script>
+    <script src="src/controllers/ucp.js"></script>
     <script src="src/controllers/header.js"></script>
 
-    <script src="src/services/user.js"></script>
+<!--
+    <script src="src/controllers/httppost.js"></script>
+-->
+
     <script src="src/filters/reverse.js"></script>
     <script src="src/filters/range.js"></script>
+
+<!--
+    <script src="src/directives/formfile.js"></script>
+-->
 </body>
 </html>

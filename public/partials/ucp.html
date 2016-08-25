@@ -1,4 +1,30 @@
 <div ng-include='"partials/appnavbar.html"'></div>
 <div class="container container-layout">
-    <h1>User Control Panel</h1>
+    <div class="row">
+        <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2" ng-controller="UCPCtrl as ucp">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#ucp_profile">Profile</a></li>
+                <li><a data-toggle="tab" href="#ucp_messages">Messages</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="ucp_profile" class="tab-pane fade in active">
+                    <form class="form" id="form" name="form">
+                        <div class="form-group">
+                            <input type="file" name="avatar" id="avatar">
+                            <button type="button" ng-click="ucp.dotest()">Do test</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="ucp_messages" class="tab-pane fade">
+                    <h3>Menu 1</h3>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+            </div>
+
+            <p>this is our section</p>
+            <input type="file" ng-model="ucp.myFile">
+        </div>
+    </div>
 </div>

@@ -1,5 +1,6 @@
-var UserCtrl = function($scope, $auth, $http, BACKEND_API) {
+var UCPCtrl = function($scope, $auth, $http, $location, BACKEND_API) {
     var self = this;
+    self.user = {};
 
     // check if user is logged in
     this.isAuthenticated =function() {
@@ -16,8 +17,7 @@ var UserCtrl = function($scope, $auth, $http, BACKEND_API) {
             .then(function successCallback(response) {
                 console.log(response);
                 $auth.setToken(response);
-                angular.element('#m_login').modal('toggle'); // close modal login
-                toastr.success('Login successfully');
+                angular.element('#m_login').modal('hide');
             })
             .catch(function(response) {
                 for(var key in response.data.error) {
@@ -37,7 +37,7 @@ var UserCtrl = function($scope, $auth, $http, BACKEND_API) {
         $auth
             .logout()
             .then(function() {
-                toastr.info('You have been logged out');
+                $location.path('/');
             });
     }
 
@@ -54,15 +54,15 @@ var UserCtrl = function($scope, $auth, $http, BACKEND_API) {
         }
     });
 
-    self.avatarUploader = {
-        upload: function(elemId) {
-            var f = angular.element(elemId).files[0];
-            r = new FileReader();
-            r.onloadend = function(e) {
-                var data = e.target.result;
-            };
-        }
+
+    self.dotest = function() {
+        var formDataById = new FormData(document.getElementById('form'));
+        var formDataByName = new FormData(document.getElementsByName('form')[0]);
+
+        console.log('formDataById: ', angular.toJson(formDataById));
+        console.log('formDataByName: ', angular.toJson(formDataByName));
+
     };
 };
 
-angular.module("app").controller('UserCtrl', UserCtrl);
+angular.module("app").controller('UCPCtrl', UCPCtrl);

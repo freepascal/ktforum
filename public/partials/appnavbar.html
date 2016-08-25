@@ -26,22 +26,22 @@
 	        	<li><a href="#">Page 2</a></li>
 	        	<li><a href="#">Page 3</a></li>
 	      	</ul>
-			<div ng-controller="UserCtrl as user">
-	    		<ul class="nav navbar-nav navbar-right"  ng-if="!user.isAuthenticated()">
+			<div ng-controller="UCPCtrl as ucp">
+	    		<ul class="nav navbar-nav navbar-right"  ng-if="!ucp.isAuthenticated()">
 	        		<li><a href="" data-toggle="modal" data-target="#m_register"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
 	        		<li><a href="" data-toggle="modal" data-target="#m_login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
 	      		</ul>
-				<ul class="nav navbar-nav navbar-right"  ng-if="user.isAuthenticated()">
+				<ul class="nav navbar-nav navbar-right"  ng-if="ucp.isAuthenticated()">
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">
-							[<span ng-bind="user.me.name"></span>]
+							[<span ng-bind="ucp.me.name"></span>]
 						</a>
 						<ul class="dropdown-menu">
 							<li>
 								<a ui-sref="ucp()">
 									User Control Panel
 								</a>
-								<a href="javascript:void(0)" ng-click="user.logout()">
+								<a href="javascript:void(0)" ng-click="ucp.logout()">
 									<span class="glyphicon glyphicon-log-out">Logout</span>
 								</a>
 							</li>

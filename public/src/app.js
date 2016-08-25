@@ -1,6 +1,7 @@
 var app = angular.module("app", [
     'ui.router',
     'satellizer',
+    'bootstrap.fileField'
 ]);
 
 app.value('BACKEND_API', 'api/');
@@ -27,19 +28,13 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
 
     $urlRouterProvider.otherwise('404');
     $stateProvider
-        .state('p404', {
+        .state('404', {
             url: '/404',
             templateUrl: '/partials/404.html'
         })
-        .state('auth_google_redirect', {
-            url: '/auth/google',
-            controller: 'AuthGoogleCtrl',
-            templateUrl: '/partials/auth/google.html'
-        })
-        .state('validate_token', {
-            url: '/validate_token',
-            controller: 'ValidateTokenCtrl',
-            templateUrl: '/partials/auth/validate_token.html'
+        .state('login', {
+            url: '/login',
+            templateUrl: '/partials/auth/login.html'
         })
         .state('app', {
             url: '/',
@@ -58,10 +53,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
         })
         .state('ucp', {
             url: '/ucp',
-            controller: 'UserCtrl as user',
+            controller: 'UCPCtrl as ucp',
             templateUrl: '/partials/ucp.html',
             resolve: {
-
+                loginRequired: requireLogin
             }
         })
         .state('topic_create', {
@@ -69,15 +64,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
             controller: 'TopicCreateCtrl',
             templateUrl: '/partials/topic/create.html',
             resolve: {
-                loginRequired: function($auth, $q, $state, $location) {
-                    var deferred = $q.defer();
-                    if ($auth.isAuthenticated()) {
-                        deferred.resolve();
-                    } else {
-                        angular.element('#m_login').modal('toggle');
-                    }
-                    return deferred.promise;
-                }
+                loginRequired: requireLogin
             }
         })
         .state('header', {
@@ -87,6 +74,16 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authP
         });
 
     $locationProvider.html5Mode(true);
+
+    function requireLogin($auth, $q, $state, $location) {
+        var deferred = $q.defer();
+        if ($auth.isAuthenticated()) {
+            deferred.resolve();
+        } else {
+            $location.path('/login');
+        }
+        return deferred.promise;
+    };
 
     //function loginRequired($auth, $q, $state, $location)
     $authProvider.loginUrl = 'api/auth/login';
@@ -173,3 +170,20 @@ app
     .controller('ValidateTokenCtrl', ValidateTokenCtrl)
     .controller('TopicCreateCtrl', TopicCreateCtrl)
 ;
+
+app.directive('fileModel', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, elem, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            elem.bind('change', function() {
+                scope.$apply(function() {
+                    modelSetter(scope, elem[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+alert('hellion');

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use View;
+use JWTAuth;
 
 class Controller extends BaseController
 {
@@ -15,7 +16,7 @@ class Controller extends BaseController
 
     public function getOr404($result)
     {
-        if ($result == null) {
+        if ($result == null || $result == false) {
             return response()->json(['error' => 'page_not_found']);
         }
         return $result;

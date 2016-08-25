@@ -17,6 +17,8 @@ class AvatarController extends Controller
     public function image($id)
     {
         $avatar = $this->getOr404(Avatar::where('id', '=', $id)->first());
+
+        /*
         $path = storage_path('app/avatars/'. $avatar->path);
         $handler = new \Symfony\Component\HttpFoundation\File\File($path);
 
@@ -26,6 +28,11 @@ class AvatarController extends Controller
             'Content-Type' => $header_content_type,
             'Content-Length'=> $header_content_length
         );
+        */
+
+        $file = Storage::disk('avatar')->get($avatar->path);
+        
+        $handler = new \Symfony\Component\HttpFoundation\File\File($file);
 
         return response()->make(file_get_contents($path), 200, $header);
     }
